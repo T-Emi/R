@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RITM Tournament - Registration</title>
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --card-bg: #141414;
+            --accent: #ff4655;
+            --accent-glow: #ff465580;
+            --gold: #f0c040;
+            --gold-glow: #f0c04060;
+            --text: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --input-bg: #1a1a1a;
+            --input-border: #2a2a2a;
+            --input-focus: #ff465560;
+            --success: #2ecc71;
+            --error: #e74c3c;
+            --radius: 14px;
+            --radius-sm: 10px;
+            --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.5);
+            --shadow-glow: 0 0 60px rgba(255, 70, 85, 0.2);
+            --font-main: 'Segoe UI', 'Tajawal', 'Vazirmatn', system-ui, -apple-system, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg);
+            background-image:
+                radial-gradient(ellipse at 50% 0%, #1a1015 0%, transparent 60%),
+                radial-gradient(ellipse at 50% 100%, #0a0a0a 0%, transparent 60%),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60"><rect width="60" height="60" fill="none"/><circle cx="30" cy="30" r="1" fill="%23222222"/></svg>');
+            background-size: 100% 100%, 100% 100%, 60px 60px;
+            font-family: var(--font-main);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-font-smoothing: antialiased;
+            transition: background 0.3s;
+        }
+
+        body.rtl {
+            direction: rtl;
+            font-family: 'Vazirmatn', 'Tajawal', 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body.rtl .lang-toggle {
+            right: auto;
+            left: 16px;
+        }
+
+        body.rtl .input-icon {
+            left: auto;
+            right: 14px;
+        }
+
+        body.rtl input {
+            padding-left: 14px;
+            padding-right: 46px;
+            text-align: right;
+        }
+
+        body.rtl .form-group label {
+            text-align: right;
+        }
+
+        body.rtl .stat-value {
+            text-align: left;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .lang-toggle {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            z-index: 100;
+            display: flex;
+            background: var(--card-bg);
+            border-radius: 30px;
+            padding: 4px;
+            gap: 2px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--input-border);
+        }
+
+        .lang-btn {
+            padding: 8px 16px;
+            border-radius: 26px;
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            background: transparent;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+            font-family: var(--font-main);
+            white-space: nowrap;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            min-width: 55px;
+            text-align: center;
+        }
+
+        .lang-btn.active {
+            background: var(--accent);
+            color: #fff;
+            box-shadow: 0 2px 12px var(--accent-glow);
+        }
+
+        .lang-btn:active {
+            transform: scale(0.95);
+        }
+
+        .main-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 24px 20px 28px;
+            box-shadow: var(--shadow-card), var(--shadow-glow);
+            border: 1px solid #1f1f1f;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ff4655, #f0c040, #ff4655);
+            background-size: 200% 100%;
+            animation: shimmer 3s ease-in-out infinite;
+            border-radius: 0 0 4px 4px;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .tournament-badge {
+            display: inline-block;
+            background: var(--accent);
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            padding: 6px 16px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        .tournament-name {
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, #ffffff 0%, #ffb3b3 40%, #f0c040 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 4px;
+            line-height: 1.2;
+        }
+
+        .game-name {
+            font-size: 13px;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .game-name span {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .map-section {
+            margin-bottom: 20px;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            position: relative;
+            border: 2px solid #222;
+            background: #0d0d0d;
+            aspect-ratio: 16/9;
+            max-height: 220px;
+        }
+
+        .map-section img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+
+        .map-section:active img {
+            transform: scale(1.03);
+        }
+
+        .map-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
+            padding: 16px 14px 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .map-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .map-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #aaa;
+        }
+        .map-name {
+            font-size: 18px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+
+        .mode-badge {
+            background: var(--accent);
+            color: #fff;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 20px;
+            letter-spacing: 1px;
+        }
+
+        .prize-banner {
+            background: linear-gradient(135deg, #1a1400 0%, #1f1500 50%, #1a1000 100%);
+            border: 1px solid #3a3000;
+            border-radius: var(--radius-sm);
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .prize-banner::after {
+            content: '';
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            width: 70px;
+            height: 70px;
+            background: var(--gold);
+            border-radius: 50%;
+            opacity: 0.08;
+            filter: blur(20px);
+        }
+
+        .prize-icon {
+            font-size: 36px;
+            flex-shrink: 0;
+            animation: bounce 2s ease-in-out infinite;
+            filter: drop-shadow(0 0 12px var(--gold-glow));
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .prize-text .prize-amount {
+            font-size: 26px;
+            font-weight: 900;
+            color: var(--gold);
+            letter-spacing: 1px;
+            line-height: 1;
+        }
+        .prize-text .prize-label {
+            font-size: 12px;
+            color: #b8952e;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .form-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #2a2a2a;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            transition: color 0.3s;
+        }
+
+        .form-group:focus-within label {
+            color: var(--accent);
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+            pointer-events: none;
+            z-index: 2;
+            opacity: 0.6;
+            transition: opacity 0.3s;
+        }
+
+        .form-group:focus-within .input-icon {
+            opacity: 1;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 14px 14px 46px;
+            background: var(--input-bg);
+            border: 2px solid var(--input-border);
+            border-radius: var(--radius-sm);
+            color: #fff;
+            font-size: 15px;
+            font-family: var(--font-main);
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            outline: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px var(--input-focus);
+            background: #1c1c1c;
+        }
+
+        input::placeholder {
+            color: #555;
+            font-size: 13px;
+            letter-spacing: 0.3px;
+        }
+
+        input:-webkit-autofill {
+            -webkit-box-shadow: 0 0 0 50px var(--input-bg) inset;
+            -webkit-text-fill-color: #fff;
+        }
+
+        .required-star {
+            color: var(--accent);
+            margin-left: 2px;
+        }
+        body.rtl .required-star {
+            margin-left: 0;
+            margin-right: 2px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            font-family: var(--font-main);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
+            margin-top: 6px;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            transition: left 0.6s;
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+        .submit-btn:active {
+            transform: scale(0.97);
+            box-shadow: 0 0 30px var(--accent-glow);
+        }
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .success-msg {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            background: #0d1a0d;
+            border: 1px solid #1a3a1a;
+            border-radius: var(--radius-sm);
+            margin-top: 16px;
+            animation: fadeInUp 0.4s ease-out;
+        }
+        .success-msg.show {
+            display: block;
+        }
+        .success-msg .check-icon {
+            font-size: 48px;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .success-msg .msg-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--success);
+            margin-bottom: 4px;
+        }
+        .success-msg .msg-sub {
+            font-size: 13px;
+            color: #8a8;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            50% { transform: translateX(6px); }
+            75% { transform: translateX(-4px); }
+        }
+        .shake {
+            animation: shake 0.5s ease;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #1a1a1a;
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            z-index: 200;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+            border: 1px solid #333;
+            transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+        }
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+        .toast.error {
+            border-color: var(--error);
+            color: #ff6b6b;
+        }
+        .toast.success {
+            border-color: var(--success);
+            color: #5dde8e;
+        }
+
+        .registered-count {
+            text-align: center;
+            font-size: 11px;
+            color: #555;
+            margin-top: 16px;
+            letter-spacing: 0.5px;
+        }
+        .registered-count span {
+            color: var(--gold);
+            font-weight: 700;
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 10px;
+            color: #444;
+            margin-top: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 380px) {
+            .main-card {
+                padding: 18px 14px 22px;
+            }
+            .tournament-name {
+                font-size: 24px;
+            }
+            input {
+                padding: 12px 12px 12px 40px;
+                font-size: 14px;
+            }
+            body.rtl input {
+                padding: 12px 40px 12px 12px;
+            }
+            .prize-text .prize-amount {
+                font-size: 22px;
+            }
+            .submit-btn {
+                padding: 14px;
+                font-size: 14px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .main-card {
+                padding: 32px 28px 36px;
+                border-radius: 20px;
+            }
+            .tournament-name {
+                font-size: 34px;
+            }
+            input {
+                padding: 16px 16px 16px 50px;
+                font-size: 16px;
+            }
+            body.rtl input {
+                padding: 16px 50px 16px 16px;
+            }
+            .submit-btn {
+                padding: 18px;
+                font-size: 17px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Language Toggle -->
+    <div class="lang-toggle" id="langToggle">
+        <button class="lang-btn active" data-lang="en" id="btnEn">🇬🇧 EN</button>
+        <button class="lang-btn" data-lang="fa" id="btnFa">🇮🇷 فارسی</button>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <div class="main-card" id="mainCard">
+            <!-- Header -->
+            <div class="header">
+                <div class="tournament-badge" data-en="TOURNAMENT" data-fa="تورنومنت">TOURNAMENT</div>
+                <h1 class="tournament-name">RITM Tournament</h1>
+                <p class="game-name">
+                    <span>Call of Duty®: Mobile</span> —
+                    <span data-en="1v1 Duel" data-fa="دویل ۱v۱">1v1 Duel</span>
+                </p>
+            </div>
+
+            <!-- Map Section -->
+            <div class="map-section">
+                <img src="assets/Ship.jpg" alt="Shipment Map" onerror="this.style.display='none';this.parentElement.querySelector('.map-fallback').style.display='flex';">
+                <div class="map-fallback" style="display:none; width:100%;height:100%;align-items:center;justify-content:center;background:#111;color:#555;font-size:14px;letter-spacing:1px;text-align:center;flex-direction:column;gap:6px;">
+                    <span style="font-size:40px;">🗺️</span>
+                    <span>Shipment Map</span>
+                    <span style="font-size:10px;color:#444;">Place Ship.jpg in /assets/</span>
+                </div>
+                <div class="map-overlay">
+                    <div class="map-info">
+                        <span class="map-label" data-en="MAP" data-fa="مپ">MAP</span>
+                        <span class="map-name">Shipment</span>
+                    </div>
+                    <span class="mode-badge" data-en="1v1 DUEL" data-fa="دویل ۱v۱">1v1 DUEL</span>
+                </div>
+            </div>
+
+            <!-- Prize Banner -->
+            <div class="prize-banner">
+                <div class="prize-icon">💎</div>
+                <div class="prize-text">
+                    <div class="prize-amount">80 CP</div>
+                    <div class="prize-label" data-en="GRAND PRIZE" data-fa="جایزه اصلی">GRAND PRIZE</div>
+                </div>
+            </div>
+
+            <!-- Registration Form -->
+            <div class="form-title">
+                <span data-en="📋 REGISTRATION" data-fa="📋 ثبت نام">📋 REGISTRATION</span>
+            </div>
+            <form id="registrationForm" action="https://formspree.io/f/xzdnlggv" method="POST" novalidate>
+                <!-- UID -->
+                <div class="form-group">
+                    <label for="uid">
+                        <span data-en="UID" data-fa="UID">UID</span>
+                        <span class="required-star">*</span>
+                    </label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🆔</span>
+                        <input type="text" id="uid" name="uid"
+                        placeholder="e.g. 6745123890123456"
+                        inputmode="numeric"
+                        pattern="[0-9]{10,20}"
+                        maxlength="20"
+                        required
+                        data-en-placeholder="e.g. 6745123890123456"
+                        data-fa-placeholder="مثال: 6745123890123456">
+                    </div>
+                </div>
+
+                <!-- IGN -->
+                <div class="form-group">
+                    <label for="ign">
+                        <span data-en="IGN (In-Game Name)" data-fa="IGN (نام درون بازی)">IGN (In-Game Name)</span>
+                        <span class="required-star">*</span>
+                    </label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🎮</span>
+                        <input type="text" id="ign" name="ign"
+                        placeholder="e.g. ProSniper_X"
+                        minlength="2"
+                        maxlength="30"
+                        required
+                        data-en-placeholder="e.g. ProSniper_X"
+                        data-fa-placeholder="مثال: ProSniper_X">
+                    </div>
+                </div>
+
+                <!-- LVL -->
+                <div class="form-group">
+                    <label for="lvl">
+                        <span data-en="LVL (Level)" data-fa="LVL (سطح)">LVL (Level)</span>
+                        <span class="required-star">*</span>
+                    </label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">⭐</span>
+                        <input type="number" id="lvl" name="lvl"
+                        placeholder="e.g. 150"
+                        inputmode="numeric"
+                        min="1"
+                        max="999"
+                        required
+                        data-en-placeholder="e.g. 150"
+                        data-fa-placeholder="مثال: 150">
+                    </div>
+                </div>
+
+                <!-- Telegram ID -->
+                <div class="form-group">
+                    <label for="telegram">
+                        <span data-en="Telegram ID" data-fa="آیدی تلگرام">Telegram ID</span>
+                        <span class="required-star">*</span>
+                    </label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">✈️</span>
+                        <input type="text" id="telegram" name="telegram"
+                        placeholder="@username"
+                        minlength="3"
+                        maxlength="40"
+                        required
+                        data-en-placeholder="@username"
+                        data-fa-placeholder="آیدی تلگرام @username">
+                    </div>
+                </div>
+
+                <!-- Submit -->
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    <span data-en="⚔️ REGISTER NOW" data-fa="⚔️ ثبت نام">⚔️ REGISTER NOW</span>
+                </button>
+            </form>
+
+            <!-- Success Message -->
+            <div class="success-msg" id="successMsg">
+                <span class="check-icon">✅</span>
+                <div class="msg-title" data-en="Registration Successful!" data-fa="ثبت نام با موفقیت انجام شد!">
+                    Registration Successful!
+                </div>
+                <div class="msg-sub" data-en="Good luck in the tournament! 🏆" data-fa="موفق باشید در تورنومنت! 🏆">
+                    Good luck in the tournament! 🏆
+                </div>
+            </div>
+
+            <!-- Registered Count -->
+            <div class="registered-count">
+                <span data-en="Registered players: " data-fa="بازیکنان ثبت‌نام شده: ">Registered players: </span>
+                <span id="playerCount">0</span>
+            </div>
+        </div>
+        <p class="footer-note" data-en="RITM Tournament © 2026 — Call of Duty® Mobile" data-fa="تورنومنت RITM © 2026 — کالاف دیوتی موبایل">
+            RITM Tournament © 2026 — Call of Duty® Mobile
+        </p>
+    </div>
+
+    <script>
+        (function() {
+            // DOM Elements
+            const body = document.body;
+            const btnEn = document.getElementById('btnEn');
+            const btnFa = document.getElementById('btnFa');
+            const form = document.getElementById('registrationForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const successMsg = document.getElementById('successMsg');
+            const toast = document.getElementById('toast');
+            const playerCountEl = document.getElementById('playerCount');
+            const mainCard = document.getElementById('mainCard');
+
+            const uidInput = document.getElementById('uid');
+            const ignInput = document.getElementById('ign');
+            const lvlInput = document.getElementById('lvl');
+            const telegramInput = document.getElementById('telegram');
+
+            let currentLang = 'en';
+            let playerCount = parseInt(localStorage.getItem('ritm_tournament_count') || '0');
+            let isSubmitting = false;
+
+            playerCountEl.textContent = playerCount;
+
+            // Language switching
+            function setLanguage(lang) {
+                currentLang = lang;
+                btnEn.classList.toggle('active', lang === 'en');
+                btnFa.classList.toggle('active', lang === 'fa');
+
+                if (lang === 'fa') {
+                    body.classList.add('rtl');
+                    body.setAttribute('dir', 'rtl');
+                    body.setAttribute('lang', 'fa');
+                } else {
+                    body.classList.remove('rtl');
+                    body.setAttribute('dir', 'ltr');
+                    body.setAttribute('lang', 'en');
+                }
+
+                document.querySelectorAll('[data-en][data-fa]').forEach(el => {
+                    const text = lang === 'fa' ? el.getAttribute('data-fa') : el.getAttribute('data-en');
+                    if (el.tagName === 'INPUT') {
+                        const placeholderAttr = lang === 'fa' ? 'data-fa-placeholder' : 'data-en-placeholder';
+                        const placeholder = el.getAttribute(placeholderAttr);
+                        if (placeholder) el.setAttribute('placeholder', placeholder);
+                    } else if (el.tagName === 'BUTTON' && el.type === 'submit') {
+                        el.innerHTML = text;
+                    } else {
+                        el.textContent = text;
+                    }
+                });
+
+                document.querySelectorAll('input[data-en-placeholder]').forEach(input => {
+                    const placeholderAttr = lang === 'fa' ? 'data-fa-placeholder' : 'data-en-placeholder';
+                    const placeholder = input.getAttribute(placeholderAttr);
+                    if (placeholder) input.setAttribute('placeholder', placeholder);
+                });
+
+                localStorage.setItem('ritm_tournament_lang', lang);
+            }
+
+            btnEn.addEventListener('click', () => setLanguage('en'));
+            btnFa.addEventListener('click', () => setLanguage('fa'));
+
+            const savedLang = localStorage.getItem('ritm_tournament_lang');
+            if (savedLang === 'fa') setLanguage('fa');
+
+            // Toast system
+            let toastTimeout;
+            function showToast(message, type = '') {
+                clearTimeout(toastTimeout);
+                toast.textContent = message;
+                toast.className = 'toast ' + type + ' show';
+                toastTimeout = setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }
+
+            // Validation helpers
+            function validateUID(uid) {
+                const cleaned = uid.replace(/\D/g, '');
+                return cleaned.length >= 10 && cleaned.length <= 20;
+            }
+            function validateIGN(ign) {
+                return ign.trim().length >= 2 && ign.trim().length <= 30;
+            }
+            function validateLVL(lvl) {
+                const num = parseInt(lvl);
+                return !isNaN(num) && num >= 1 && num <= 999;
+            }
+            function validateTelegram(telegram) {
+                const trimmed = telegram.trim();
+                return trimmed.length >= 3 && trimmed.length <= 40;
+            }
+            function shakeElement(el) {
+                el.classList.add('shake');
+                setTimeout(() => el.classList.remove('shake'), 500);
+            }
+
+            // Form submission with Formspree
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                if (isSubmitting) return;
+
+                const uid = uidInput.value.trim();
+                const ign = ignInput.value.trim();
+                const lvl = lvlInput.value.trim();
+                const telegram = telegramInput.value.trim();
+
+                // Validate
+                let hasError = false;
+                const errors = { en: [], fa: [] };
+
+                if (!validateUID(uid)) {
+                    hasError = true;
+                    errors.en.push('UID must be 10-20 digits');
+                    errors.fa.push('UID باید ۱۰ تا ۲۰ رقم باشد');
+                    shakeElement(uidInput);
+                    uidInput.style.borderColor = '#e74c3c';
+                } else uidInput.style.borderColor = '#2a2a2a';
+
+                if (!validateIGN(ign)) {
+                    hasError = true;
+                    errors.en.push('IGN must be 2-30 characters');
+                    errors.fa.push('نام درون بازی باید ۲ تا ۳۰ کاراکتر باشد');
+                    shakeElement(ignInput);
+                    ignInput.style.borderColor = '#e74c3c';
+                } else ignInput.style.borderColor = '#2a2a2a';
+
+                if (!validateLVL(lvl)) {
+                    hasError = true;
+                    errors.en.push('Level must be between 1-999');
+                    errors.fa.push('سطح باید بین ۱ تا ۹۹۹ باشد');
+                    shakeElement(lvlInput);
+                    lvlInput.style.borderColor = '#e74c3c';
+                } else lvlInput.style.borderColor = '#2a2a2a';
+
+                if (!validateTelegram(telegram)) {
+                    hasError = true;
+                    errors.en.push('Telegram ID must be 3-40 characters');
+                    errors.fa.push('آیدی تلگرام باید ۳ تا ۴۰ کاراکتر باشد');
+                    shakeElement(telegramInput);
+                    telegramInput.style.borderColor = '#e74c3c';
+                } else telegramInput.style.borderColor = '#2a2a2a';
+
+                if (hasError) {
+                    const errorMsg = currentLang === 'fa' ? errors.fa.join(' | ') : errors.en.join(' | ');
+                    showToast(errorMsg, 'error');
+                    return;
+                }
+
+                // Proceed with submission
+                isSubmitting = true;
+                submitBtn.disabled = true;
+                const originalHTML = submitBtn.innerHTML;
+                submitBtn.innerHTML = currentLang === 'fa' ? '⏳ در حال ثبت...' : '⏳ REGISTERING...';
+
+                // Prepare FormData
+                const formData = new FormData(form);
+                // Ensure UID is clean digits only
+                formData.set('uid', uid.replace(/\D/g, ''));
+
+                try {
+                    const response = await fetch('https://formspree.io/f/xzdnlggv', {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    });
+
+                    if (response.ok) {
+                        // Success
+                        playerCount++;
+                        localStorage.setItem('ritm_tournament_count', playerCount.toString());
+                        playerCountEl.textContent = playerCount;
+
+                        // Store locally for demo
+                        const registrations = JSON.parse(localStorage.getItem('ritm_tournament_registrations') || '[]');
+                        registrations.push({
+                            uid: uid.replace(/\D/g, ''),
+                            ign, lvl: parseInt(lvl), telegram,
+                            timestamp: new Date().toISOString()
+                        });
+                        localStorage.setItem('ritm_tournament_registrations', JSON.stringify(registrations));
+
+                        form.style.display = 'none';
+                        successMsg.classList.add('show');
+                        mainCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        showToast(currentLang === 'fa' ? '✅ ثبت نام با موفقیت انجام شد!' : '✅ Registration Successful!', 'success');
+
+                        // Reset after delay
+                        setTimeout(() => {
+                            form.reset();
+                            form.style.display = 'block';
+                            successMsg.classList.remove('show');
+                            submitBtn.disabled = false;
+                            submitBtn.innerHTML = originalHTML;
+                            isSubmitting = false;
+                            [uidInput, ignInput, lvlInput, telegramInput].forEach(inp => inp.style.borderColor = '#2a2a2a');
+                        }, 4000);
+                    } else {
+                        const errorData = await response.json().catch(() => ({}));
+                        const msg = errorData.error || (currentLang === 'fa' ? 'خطا در ارسال فرم' : 'Submission failed');
+                        showToast(msg, 'error');
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalHTML;
+                        isSubmitting = false;
+                    }
+                } catch (networkError) {
+                    showToast(currentLang === 'fa' ? 'خطای شبکه. دوباره تلاش کنید' : 'Network error. Please try again.', 'error');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalHTML;
+                    isSubmitting = false;
+                }
+            });
+
+            // Real-time input visual feedback
+            [uidInput, ignInput, lvlInput, telegramInput].forEach(input => {
+                input.addEventListener('input', function() {
+                    if (this.style.borderColor === 'rgb(231, 76, 60)' || this.style.borderColor === '#e74c3c') {
+                        this.style.borderColor = '#2a2a2a';
+                    }
+                });
+                input.addEventListener('blur', function() {
+                    const val = this.value.trim();
+                    if (val === '') return;
+                    let valid = true;
+                    if (this === uidInput) valid = validateUID(val);
+                    if (this === ignInput) valid = validateIGN(val);
+                    if (this === lvlInput) valid = validateLVL(val);
+                    if (this === telegramInput) valid = validateTelegram(val);
+                    this.style.borderColor = valid ? '#2a2a2a' : '#e74c3c';
+                });
+                input.addEventListener('focus', function() {
+                    if (this.style.borderColor === 'rgb(231, 76, 60)' || this.style.borderColor === '#e74c3c') {
+                        this.style.borderColor = '#ff465560';
+                    }
+                });
+            });
+
+            // UID digits only
+            uidInput.addEventListener('input', function() {
+                this.value = this.value.replace(/\D/g, '');
+            });
+            lvlInput.addEventListener('input', function() {
+                this.value = this.value.replace(/\D/g, '');
+                if (parseInt(this.value) > 999) this.value = '999';
+            });
+
+            console.log('%c🏆 RITM Tournament %cRegistration Portal',
+                'font-size:20px;font-weight:bold;color:#f0c040;',
+                'font-size:14px;color:#ff4655;');
+            console.log('%cGame: Call of Duty® Mobile | Map: Shipment | Mode: 1v1 Duel | Prize: 80 CP', 'color:#aaa;');
+            console.log('%cSubmissions are sent to Formspree endpoint.', 'color:#5dde8e;');
+        })();
+    </script>
+</body>
+</html>

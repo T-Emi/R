@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RITM | گروه فریلنسری</title>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #06060b;
+            --bg2: #0c0c16;
+            --card: #111122;
+            --border: #1e1e3a;
+            --purple: #8b5cf6;
+            --purple2: #a78bfa;
+            --cyan: #22d3ee;
+            --gold: #f59e0b;
+            --text: #e2e8f0;
+            --muted: #94a3b8;
+            --red: #ef4444;
+            --green: #10b981;
+            --radius: 16px;
+            --radius-sm: 10px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Vazirmatn', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            direction: rtl;
+            line-height: 1.7;
+            overflow-x: hidden;
+            min-height: 100vh;
+            padding-bottom: 100px;
+            position: relative;
+        }
+
+        /* ذرات پس‌زمینه */
+        .particles {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            animation: floatUp linear infinite;
+            opacity: 0;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+        }
+        .bg-glow {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.3;
+            animation: glowPulse 8s ease-in-out infinite;
+        }
+        .bg-glow.g1 {
+            width: 500px; height: 500px; background: var(--purple);
+            top: -150px; left: -150px;
+        }
+        .bg-glow.g2 {
+            width: 400px; height: 400px; background: var(--cyan);
+            bottom: -100px; right: -100px; animation-delay: 4s;
+        }
+        @keyframes glowPulse {
+            0%, 100% { transform: scale(1); opacity: 0.25; }
+            50% { transform: scale(1.3); opacity: 0.45; }
+        }
+
+        .content-layer {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ناوبری */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(6, 6, 11, 0.75);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid var(--border);
+            padding: 0 1.5rem;
+        }
+        .navbar-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 65px;
+        }
+        .nav-logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--purple2), var(--cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            cursor: pointer;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+        .nav-links a {
+            color: var(--muted);
+            text-decoration: none;
+            transition: var(--transition);
+            position: relative;
+            padding: 0.3rem 0;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0; right: 0;
+            width: 0; height: 2px;
+            background: var(--purple);
+            border-radius: 2px;
+            transition: width var(--transition);
+        }
+        .nav-links a:hover { color: #fff; }
+        .nav-links a:hover::after { width: 100%; left: 0; right: auto; }
+
+        .lang-toggle {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text);
+            font-family: 'Vazirmatn', system-ui, sans-serif;
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8rem;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            margin-right: 1.5rem;
+        }
+        .lang-toggle:hover {
+            background: rgba(255,255,255,0.05);
+            border-color: var(--purple);
+        }
+
+        /* هیرو */
+        .hero {
+            text-align: center;
+            padding: 5rem 1.5rem 4rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(139, 92, 246, 0.15);
+            border: 1px solid rgba(139, 92, 246, 0.35);
+            color: var(--purple2);
+            padding: 0.4rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fff 20%, var(--purple2) 50%, var(--cyan) 80%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero .subtitle {
+            font-size: 1.2rem;
+            color: var(--muted);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+        .stat-item { text-align: center; }
+        .stat-num {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: #fff;
+            display: block;
+        }
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--muted);
+            font-weight: 500;
+        }
+
+        /* بخش‌ها */
+        .section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        .section-header { text-align: center; margin-bottom: 3rem; }
+        .section-tag {
+            display: inline-block;
+            background: rgba(245, 158, 11, 0.12);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            color: var(--gold);
+            padding: 0.3rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+        }
+        .section-title {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+        .section-desc {
+            color: var(--muted);
+            font-size: 1rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* چرخ‌فالک نمونه‌کار */
+        .carousel-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        .carousel-viewport {
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+            max-width: 1000px;
+            height: 380px;
+        }
+        .carousel-track {
+            position: relative;
+            height: 100%;
+            width: 100%;
+        }
+        .portfolio-card {
+            position: absolute;
+            top: 50%;
+            width: 320px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1.2);
+            cursor: pointer;
+            user-select: none;
+            will-change: transform, opacity, left, right;
+        }
+        .portfolio-card.center {
+            left: 50%;
+            transform: translate(-50%, calc(-50% - 20px)) scale(1.08);
+            opacity: 1;
+            z-index: 5;
+            box-shadow: 0 30px 60px rgba(139, 92, 246, 0.3);
+            border-color: var(--purple);
+        }
+        .portfolio-card.left {
+            left: 5%;
+            transform: translate(0, -50%) scale(0.82);
+            opacity: 0.55;
+            z-index: 3;
+            filter: brightness(0.7);
+        }
+        .portfolio-card.right {
+            right: 5%;
+            left: auto;
+            transform: translate(0, -50%) scale(0.82);
+            opacity: 0.55;
+            z-index: 3;
+            filter: brightness(0.7);
+        }
+        .portfolio-card.hidden-card {
+            opacity: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .portfolio-media-wrap {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            overflow: hidden;
+            background: #0a0a14;
+        }
+        .portfolio-media-wrap img,
+        .portfolio-media-wrap video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .portfolio-card.center:hover .portfolio-media-wrap img,
+        .portfolio-card.center:hover .portfolio-media-wrap video {
+            transform: scale(1.05);
+        }
+        .portfolio-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%);
+            display: flex;
+            align-items: flex-end;
+            padding: 1rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .portfolio-card.center:hover .portfolio-overlay {
+            opacity: 1;
+        }
+        .portfolio-overlay span {
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.9rem;
+            background: rgba(0,0,0,0.5);
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            backdrop-filter: blur(6px);
+        }
+        .portfolio-label {
+            padding: 0.7rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            background: rgba(255,255,255,0.02);
+        }
+        .fallback-fa, .fallback-en {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #555;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .carousel-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            color: #fff;
+            font-size: 2rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            backdrop-filter: blur(8px);
+            flex-shrink: 0;
+        }
+        .carousel-btn:hover {
+            background: rgba(139,92,246,0.2);
+            border-color: var(--purple);
+            transform: scale(1.1);
+        }
+        .carousel-btn.prev { margin-left: 0.5rem; }
+        .carousel-btn.next { margin-right: 0.5rem; }
+
+        /* راه‌های ارتباطی */
+        .contact-cards {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .contact-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1rem 1.8rem;
+            text-decoration: none;
+            color: #fff;
+            transition: var(--transition);
+            font-weight: 600;
+            min-width: 220px;
+            justify-content: center;
+        }
+        .contact-card:hover { transform: translateY(-4px); }
+        .contact-card.telegram:hover { border-color: #2aabee; background: rgba(42,171,238,0.08); }
+        .contact-card.bale:hover { border-color: #10b981; background: rgba(16,185,129,0.08); }
+        .contact-icon {
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .contact-icon.tg { background: rgba(42,171,238,0.2); }
+        .contact-icon.bl { background: rgba(16,185,129,0.2); }
+        .contact-icon svg { width: 22px; height: 22px; }
+
+        /* دکمه شناور */
+        .floating-order-btn {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 200;
+            background: linear-gradient(135deg, var(--purple), #6d28d9);
+            color: #fff;
+            border: none;
+            padding: 0.9rem 2.5rem;
+            border-radius: 50px;
+            font-family: 'Vazirmatn', system-ui, sans-serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 8px 35px rgba(139,92,246,0.5);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            animation: btnPulse 3s ease-in-out infinite;
+            white-space: nowrap;
+        }
+        .floating-order-btn:hover {
+            transform: translateX(-50%) translateY(-3px);
+            box-shadow: 0 14px 45px rgba(139,92,246,0.7);
+        }
+        @keyframes btnPulse {
+            0%, 100% { box-shadow: 0 8px 35px rgba(139,92,246,0.5); }
+            50% { box-shadow: 0 8px 60px rgba(139,92,246,0.85); }
+        }
+        .btn-sparkle { font-size: 1.3rem; }
+
+        /* مودال فرم */
+        .modal-overlay {
+            position: fixed; inset: 0; z-index: 9998;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.35s;
+            padding: 1rem;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: all; }
+        .modal {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            max-width: 650px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 2rem;
+            position: relative;
+            transform: translateY(30px) scale(0.95);
+            transition: transform 0.35s;
+        }
+        .modal-overlay.active .modal { transform: translateY(0) scale(1); }
+        .modal-close {
+            position: absolute; top: 15px; left: 15px;
+            width: 38px; height: 38px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 50%;
+            color: #fff; font-size: 1.3rem;
+            cursor: pointer; display: flex;
+            align-items: center; justify-content: center;
+            transition: var(--transition);
+        }
+        .modal h2 { text-align: center; font-weight: 800; color: #fff; }
+        .modal-subtitle { text-align: center; color: var(--muted); margin-bottom: 1.5rem; }
+        .pricing-box {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .pricing-box h3 { color: var(--gold); font-weight: 700; margin-bottom: 0.8rem; }
+        .pricing-row {
+            display: flex; justify-content: space-between;
+            padding: 0.45rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        .pricing-amount { font-weight: 700; color: #fff; }
+        .order-form { display: flex; flex-direction: column; gap: 1rem; }
+        .form-group { display: flex; flex-direction: column; gap: 0.35rem; }
+        .form-group label { font-weight: 600; }
+        .form-group input, .form-group select, .form-group textarea {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 0.75rem 1rem;
+            color: #fff;
+            font-family: inherit;
+            outline: none;
+        }
+        .submit-btn {
+            background: linear-gradient(135deg, var(--purple), #6d28d9);
+            color: #fff; border: none; padding: 0.9rem;
+            border-radius: 50px; font-weight: 700; cursor: pointer;
+        }
+        .footer {
+            text-align: center; padding: 2rem;
+            color: var(--muted); border-top: 1px solid var(--border);
+        }
+
+        @media (max-width: 768px) {
+            .carousel-viewport { height: 320px; }
+            .portfolio-card { width: 260px; }
+            .portfolio-card.left { left: 2%; }
+            .portfolio-card.right { right: 2%; }
+            .carousel-btn { width: 40px; height: 40px; font-size: 1.5rem; }
+            .lang-toggle { margin-right: 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    <div class="bg-glow g1"></div>
+    <div class="bg-glow g2"></div>
+
+    <div class="content-layer">
+        <nav class="navbar">
+            <div class="navbar-inner">
+                <div class="nav-logo" onclick="window.scrollTo({top:0,behavior:'smooth'})">RITM</div>
+                <div style="display:flex; align-items:center;">
+                    <button class="lang-toggle" id="langToggle" aria-label="تغییر زبان">
+                        <span>🌐</span> <span id="langLabel">EN</span>
+                    </button>
+                    <ul class="nav-links">
+                        <li><a href="#home" data-translate="navHome">خانه</a></li>
+                        <li><a href="#portfolio" data-translate="navPortfolio">نمونه‌کارها</a></li>
+                        <li><a href="#contact" data-translate="navContact">ارتباط</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <section class="hero" id="home">
+            <div class="hero-badge" data-translate="heroBadge">🚀 گروه فریلنسری RITM</div>
+            <h1 data-translate="heroTitle">خلاقیت، سرعت، کیفیت</h1>
+            <p class="subtitle" data-translate="heroSubtitle">ما در RITM خدمات حرفه‌ای ادیت ویدئو و برنامه‌نویسی وب رو با بهترین کیفیت و قیمت مناسب به شما ارائه می‌دیم.</p>
+            <div class="hero-stats">
+                <div class="stat-item"><span class="stat-num" data-count="150">۰</span><span class="stat-label" data-translate="statProjects">پروژه انجام‌شده</span></div>
+                <div class="stat-item"><span class="stat-num" data-count="98">۰</span><span class="stat-label" data-translate="statSatisfaction">درصد رضایت</span></div>
+                <div class="stat-item"><span class="stat-num" data-count="24">۰</span><span class="stat-label" data-translate="statSupport">ساعت پشتیبانی</span></div>
+            </div>
+        </section>
+
+        <section class="section" id="portfolio">
+            <div class="section-header">
+                <div class="section-tag" data-translate="portfolioTag">📁 نمونه‌کارها</div>
+                <h2 class="section-title" data-translate="portfolioTitle">کارهایی که انجام دادیم</h2>
+                <p class="section-desc" data-translate="portfolioDesc">برای دیدن هر نمونه کلیک کنید. فایل‌ها در پوشه assets قرار می‌گیرن.</p>
+            </div>
+
+            <div class="carousel-wrapper">
+                <button class="carousel-btn prev" id="carouselPrev">‹</button>
+                <div class="carousel-viewport">
+                    <div class="carousel-track" id="carouselTrack">
+                        <!-- نمونه کار ۱ -->
+                        <div class="portfolio-card" data-index="0" data-src="assets/N1.png">
+                            <div class="portfolio-media-wrap">
+                                <img src="assets/N1.png" alt="نمونه کار ۱" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.fallback-fa').style.display='flex';">
+                                <div class="fallback-fa" style="display:none;">فایل N1.png رو در پوشه assets بذار</div>
+                                <div class="fallback-en" style="display:none;">Place N1.png in assets folder</div>
+                                <div class="portfolio-overlay"><span>🔍 مشاهده</span></div>
+                            </div>
+                            <div class="portfolio-label" data-translate="workLabel1">نمونه کار ۱</div>
+                        </div>
+                        <!-- نمونه کار ۲ -->
+                        <div class="portfolio-card" data-index="1" data-src="assets/N2.png">
+                            <div class="portfolio-media-wrap">
+                                <img src="assets/N2.png" alt="نمونه کار ۲" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.fallback-fa').style.display='flex';">
+                                <div class="fallback-fa" style="display:none;">فایل N2.png رو در پوشه assets بذار</div>
+                                <div class="fallback-en" style="display:none;">Place N2.png in assets folder</div>
+                                <div class="portfolio-overlay"><span>🔍 مشاهده</span></div>
+                            </div>
+                            <div class="portfolio-label" data-translate="workLabel2">نمونه کار ۲</div>
+                        </div>
+                        <!-- نمونه کار ۳ -->
+                        <div class="portfolio-card" data-index="2" data-src="assets/N3.png">
+                            <div class="portfolio-media-wrap">
+                                <img src="assets/N3.png" alt="نمونه کار ۳" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.fallback-fa').style.display='flex';">
+                                <div class="fallback-fa" style="display:none;">فایل N3.png رو در پوشه assets بذار</div>
+                                <div class="fallback-en" style="display:none;">Place N3.png in assets folder</div>
+                                <div class="portfolio-overlay"><span>🔍 مشاهده</span></div>
+                            </div>
+                            <div class="portfolio-label" data-translate="workLabel3">نمونه کار ۳</div>
+                        </div>
+                        <!-- نمونه کار ۴ -->
+                        <div class="portfolio-card" data-index="3" data-src="assets/N4.png">
+                            <div class="portfolio-media-wrap">
+                                <img src="assets/N4.png" alt="نمونه کار ۴" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.fallback-fa').style.display='flex';">
+                                <div class="fallback-fa" style="display:none;">فایل N4.png رو در پوشه assets بذار</div>
+                                <div class="fallback-en" style="display:none;">Place N4.png in assets folder</div>
+                                <div class="portfolio-overlay"><span>🔍 مشاهده</span></div>
+                            </div>
+                            <div class="portfolio-label" data-translate="workLabel4">نمونه کار ۴</div>
+                        </div>
+                        <!-- نمونه کار ۵ -->
+                        <div class="portfolio-card" data-index="4" data-src="assets/N5.png">
+                            <div class="portfolio-media-wrap">
+                                <img src="assets/N5.png" alt="نمونه کار ۵" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.fallback-fa').style.display='flex';">
+                                <div class="fallback-fa" style="display:none;">فایل N5.png رو در پوشه assets بذار</div>
+                                <div class="fallback-en" style="display:none;">Place N5.png in assets folder</div>
+                                <div class="portfolio-overlay"><span>🔍 مشاهده</span></div>
+                            </div>
+                            <div class="portfolio-label" data-translate="workLabel5">نمونه کار ۵</div>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-btn next" id="carouselNext">›</button>
+            </div>
+        </section>
+
+        <section class="section" id="contact">
+            <div class="section-header">
+                <div class="section-tag" data-translate="contactTag">📞 ارتباط با ما</div>
+                <h2 class="section-title" data-translate="contactTitle">عضو کانال ما شو</h2>
+                <p class="section-desc" data-translate="contactDesc">از طریق تلگرام و بله با ما در ارتباط باش.</p>
+            </div>
+            <div class="contact-cards">
+                <a href="https://t.me/RITM_FreeLancer" target="_blank" class="contact-card telegram">
+                    <div class="contact-icon tg"><svg viewBox="0 0 24 24" fill="#2AABEE"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.02-1.96 1.25-5.54 3.66-.52.36-1 .53-1.42.52-.47-.01-1.37-.26-2.03-.48-.82-.27-1.47-.42-1.41-.88.03-.24.37-.49 1.02-.74 3.98-1.73 6.63-2.87 7.96-3.42 3.79-1.58 4.58-1.85 5.09-1.86.11 0 .37.03.54.17.14.12.18.28.2.45-.01.06.01.24 0 .38z"/></svg></div>
+                    <span>t.me/RITM_FreeLancer</span>
+                </a>
+                <a href="https://ble.ir/RITM_FreeLancer" target="_blank" class="contact-card bale">
+                    <div class="contact-icon bl"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="16" rx="4" fill="#10b981"/><path d="M7 9h10M7 13h7" stroke="#fff" stroke-width="2" stroke-linecap="round"/><circle cx="17.5" cy="16.5" r="3.5" fill="#10b981" stroke="#fff" stroke-width="1.5"/><path d="M16.5 16.5h2M17.5 15.5v2" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+                    <span>ble.ir/RITM_FreeLancer</span>
+                </a>
+            </div>
+        </section>
+
+        <div class="footer" data-translate="footer">© ۲۰۲۶ · ساخته شده با ❤️ توسط گروه RITM</div>
+    </div>
+
+    <button class="floating-order-btn" id="floatingOrderBtn">
+        <span class="btn-sparkle">⚡</span> <span data-translate="orderBtn">ثبت سفارش</span>
+    </button>
+
+    <!-- مودال فرم -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <button class="modal-close" id="modalClose">✕</button>
+            <h2 data-translate="modalTitle">📋 ثبت سفارش</h2>
+            <p class="modal-subtitle" data-translate="modalSubtitle">خدمات مورد نظرت رو انتخاب کن و فرم زیر رو پر کن</p>
+            <div class="pricing-box">
+                <h3 data-translate="editHeading">🎬 خدمات ادیت ویدئو</h3>
+                <div class="pricing-row"><span data-translate="editPremiere">ادیت با پریمیر پرو</span><span class="pricing-amount">۶۰,۰۰۰ تومان</span></div>
+                <div class="pricing-row"><span data-translate="editMobile">ادیت با گوشی موبایل</span><span class="pricing-amount">۱۰۰,۰۰۰ تومان</span></div>
+            </div>
+            <div class="pricing-box">
+                <h3 data-translate="codeHeading">💻 خدمات برنامه‌نویسی HTML</h3>
+                <div class="pricing-row"><span data-translate="codeSingle">تک‌صفحه HTML + آنلاین‌سازی</span><span class="pricing-amount">۲۵۰,۰۰۰ تومان</span></div>
+                <div class="pricing-row"><span data-translate="codeFull">پروژه کامل + آنلاین‌سازی</span><span class="pricing-amount">۴۰۰,۰۰۰ تومان</span></div>
+            </div>
+            <p class="delivery-note" data-translate="deliveryNote">⏱ زمان تحویل پس از بررسی سفارش اعلام می‌شود.</p>
+            <form class="order-form" id="orderForm">
+                <div class="form-group"><label for="name" data-translate="formName">👤 نام و نام خانوادگی *</label><input type="text" id="name" name="name" required></div>
+                <div class="form-group"><label for="phone" data-translate="formPhone">📱 شماره تماس *</label><input type="tel" id="phone" name="phone" required></div>
+                <div class="form-group"><label for="email" data-translate="formEmail">📧 ایمیل (اختیاری)</label><input type="email" id="email" name="email"></div>
+                <div class="form-group"><label for="service" data-translate="formService">🎯 نوع خدمت *</label>
+                    <select id="service" name="service" required>
+                        <option value="" disabled selected data-translate="serviceSelect">یک خدمت رو انتخاب کن</option>
+                        <option value="ادیت پریمیر پرو - ۶۰,۰۰۰ تومان">🎬 ادیت پریمیر پرو - ۶۰,۰۰۰ ت</option>
+                        <option value="ادیت موبایل - ۱۰۰,۰۰۰ تومان">📱 ادیت موبایل - ۱۰۰,۰۰۰ ت</option>
+                        <option value="تک‌صفحه HTML - ۲۵۰,۰۰۰ تومان">💻 تک‌صفحه HTML - ۲۵۰,۰۰۰ ت</option>
+                        <option value="پروژه کامل - ۴۰۰,۰۰۰ تومان">🚀 پروژه کامل - ۴۰۰,۰۰۰ ت</option>
+                    </select>
+                </div>
+                <div class="form-group"><label for="description" data-translate="formDesc">📝 توضیحات سفارش *</label><textarea id="description" name="description" required></textarea></div>
+                <div class="form-feedback" id="formFeedback"></div>
+                <button type="submit" class="submit-btn" id="submitBtn" data-translate="submitBtn">🚀 ارسال سفارش</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ذرات پس‌زمینه
+            const particlesContainer = document.getElementById('particles');
+            const colors = ['#8b5cf6','#a78bfa','#22d3ee','#f59e0b','#6366f1','#10b981'];
+            for(let i=0; i<35; i++){
+                const p = document.createElement('div'); p.className='particle';
+                const s = Math.random()*4+2;
+                p.style.width=s+'px'; p.style.height=s+'px';
+                p.style.background=colors[Math.floor(Math.random()*colors.length)];
+                p.style.left=Math.random()*100+'%';
+                p.style.animationDuration=Math.random()*15+10+'s';
+                p.style.animationDelay=Math.random()*15+'s';
+                particlesContainer.appendChild(p);
+            }
+
+            // شمارنده‌ها
+            const statNums = document.querySelectorAll('.stat-num[data-count]');
+            const obs = new IntersectionObserver((entries)=>{
+                entries.forEach(e=>{
+                    if(e.isIntersecting){
+                        const el=e.target, target=+el.dataset.count, dur=2000, start=performance.now();
+                        function upd(ts){
+                            const p=Math.min((ts-start)/dur,1), eased=1-Math.pow(1-p,3);
+                            el.textContent=Math.floor(eased*target).toLocaleString('fa-IR');
+                            if(p<1) requestAnimationFrame(upd);
+                            else el.textContent=target.toLocaleString('fa-IR')+(target===98?'٪':'+');
+                        }
+                        requestAnimationFrame(upd); obs.unobserve(el);
+                    }
+                });
+            },{threshold:0.5});
+            statNums.forEach(el=>obs.observe(el));
+
+            // چرخ‌فالک
+            const track = document.getElementById('carouselTrack');
+            const cards = Array.from(track.querySelectorAll('.portfolio-card'));
+            const prevBtn = document.getElementById('carouselPrev');
+            const nextBtn = document.getElementById('carouselNext');
+            let centerIndex = 0;
+            let autoRotate;
+
+            function updateCarousel() {
+                cards.forEach((card,i)=>{
+                    card.classList.remove('center','left','right','hidden-card');
+                    if(i === centerIndex) card.classList.add('center');
+                    else if(i === (centerIndex-1+cards.length)%cards.length) card.classList.add('left');
+                    else if(i === (centerIndex+1)%cards.length) card.classList.add('right');
+                    else card.classList.add('hidden-card');
+                });
+            }
+
+            function goTo(index) {
+                centerIndex = ((index % cards.length) + cards.length) % cards.length;
+                updateCarousel();
+                resetAutoRotate();
+            }
+            function next() { goTo(centerIndex+1); }
+            function prev() { goTo(centerIndex-1); }
+
+            function resetAutoRotate() {
+                clearInterval(autoRotate);
+                autoRotate = setInterval(next, 4500);
+            }
+
+            prevBtn.addEventListener('click', prev);
+            nextBtn.addEventListener('click', next);
+
+            // کلیک روی کارت وسط -> باز کردن لایت‌باکس (فقط تصویر)
+            track.addEventListener('click', (e) => {
+                const card = e.target.closest('.portfolio-card.center');
+                if(!card) return;
+                const video = card.querySelector('video');
+                if(video && e.target.closest('video')) return; // اجازه کنترل ویدئو
+                const src = card.dataset.src;
+                const img = card.querySelector('img');
+                const actualSrc = img && img.style.display !== 'none' ? img.src : src;
+                if(actualSrc && !actualSrc.includes('placeholder')) {
+                    const lightbox = document.getElementById('lightbox');
+                    const lightboxImg = document.getElementById('lightboxImg');
+                    if(!lightbox) return;
+                    lightboxImg.src = actualSrc;
+                    lightbox.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+            });
+
+            // لایت‌باکس (ایجاد در صورت نیاز)
+            if(!document.getElementById('lightbox')) {
+                const lb = document.createElement('div');
+                lb.id = 'lightbox';
+                lb.className = 'lightbox';
+                lb.innerHTML = '<button class="lightbox-close" id="lightboxClose">✕</button><img class="lightbox-content" id="lightboxImg">';
+                document.body.appendChild(lb);
+                const closeBtn = document.getElementById('lightboxClose');
+                const lightbox = document.getElementById('lightbox');
+                closeBtn.addEventListener('click', ()=>{
+                    lightbox.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+                lightbox.addEventListener('click', (e)=>{
+                    if(e.target===lightbox || e.target.id==='lightboxImg') {
+                        lightbox.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                });
+            }
+
+            updateCarousel();
+            autoRotate = setInterval(next, 4500);
+
+            // مودال فرم
+            const modalOverlay = document.getElementById('modalOverlay');
+            const modalClose = document.getElementById('modalClose');
+            const floatingBtn = document.getElementById('floatingOrderBtn');
+            const orderForm = document.getElementById('orderForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const formFeedback = document.getElementById('formFeedback');
+
+            floatingBtn.addEventListener('click', ()=>{
+                modalOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+            modalClose.addEventListener('click', ()=>{
+                modalOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+            modalOverlay.addEventListener('click', (e)=>{ if(e.target===modalOverlay) { modalOverlay.classList.remove('active'); document.body.style.overflow=''; } });
+            document.addEventListener('keydown',(e)=>{ if(e.key==='Escape' && modalOverlay.classList.contains('active')) { modalOverlay.classList.remove('active'); document.body.style.overflow=''; } });
+
+            orderForm.addEventListener('submit', async (e)=>{
+                e.preventDefault();
+                submitBtn.disabled = true;
+                submitBtn.textContent = '⏳ ...';
+                const data = {
+                    name: document.getElementById('name').value,
+                    phone: document.getElementById('phone').value,
+                    email: document.getElementById('email').value || 'ندارد',
+                    service: document.getElementById('service').value,
+                    description: document.getElementById('description').value,
+                };
+                try {
+                    const res = await fetch('https://formspree.io/f/mykqrbdp', {
+                        method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data)
+                    });
+                    if(res.ok){
+                        formFeedback.textContent = currentLang==='fa' ? '✅ سفارش ثبت شد!' : '✅ Order submitted!';
+                        formFeedback.style.color='#10b981';
+                        orderForm.reset();
+                        setTimeout(()=>{ modalOverlay.classList.remove('active'); document.body.style.overflow=''; }, 2500);
+                    } else throw new Error();
+                } catch {
+                    formFeedback.textContent = currentLang==='fa' ? '❌ خطا! دوباره تلاش کن.' : '❌ Error! Try again.';
+                    formFeedback.style.color='#ef4444';
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = currentLang==='fa' ? '🚀 ارسال سفارش' : '🚀 Submit Order';
+                }
+            });
+
+            // ترجمه‌ها
+            const translations = {
+                fa: {
+                    navHome:'خانه', navPortfolio:'نمونه‌کارها', navContact:'ارتباط',
+                    heroBadge:'🚀 گروه فریلنسری RITM', heroTitle:'خلاقیت، سرعت، کیفیت',
+                    heroSubtitle:'ما در RITM خدمات حرفه‌ای ادیت ویدئو و برنامه‌نویسی وب رو با بهترین کیفیت و قیمت مناسب به شما ارائه می‌دیم.',
+                    statProjects:'پروژه انجام‌شده', statSatisfaction:'درصد رضایت', statSupport:'ساعت پشتیبانی',
+                    portfolioTag:'📁 نمونه‌کارها', portfolioTitle:'کارهایی که انجام دادیم', portfolioDesc:'برای دیدن هر نمونه کلیک کنید.',
+                    workLabel1:'نمونه کار ۱', workLabel2:'نمونه کار ۲', workLabel3:'نمونه کار ۳', workLabel4:'نمونه کار ۴', workLabel5:'نمونه کار ۵',
+                    contactTag:'📞 ارتباط با ما', contactTitle:'عضو کانال ما شو', contactDesc:'از طریق تلگرام و بله با ما در ارتباط باش.',
+                    orderBtn:'ثبت سفارش', footer:'© ۲۰۲۶ · ساخته شده با ❤️ توسط گروه RITM',
+                    modalTitle:'📋 ثبت سفارش', modalSubtitle:'خدمات مورد نظرت رو انتخاب کن و فرم زیر رو پر کن',
+                    editHeading:'🎬 خدمات ادیت ویدئو', editPremiere:'ادیت با پریمیر پرو', editMobile:'ادیت با گوشی موبایل',
+                    codeHeading:'💻 خدمات برنامه‌نویسی HTML', codeSingle:'تک‌صفحه HTML + آنلاین‌سازی', codeFull:'پروژه کامل + آنلاین‌سازی',
+                    deliveryNote:'⏱ زمان تحویل پس از بررسی سفارش اعلام می‌شود.',
+                    formName:'👤 نام و نام خانوادگی *', formPhone:'📱 شماره تماس *', formEmail:'📧 ایمیل (اختیاری)',
+                    formService:'🎯 نوع خدمت *', serviceSelect:'یک خدمت رو انتخاب کن', formDesc:'📝 توضیحات سفارش *',
+                    submitBtn:'🚀 ارسال سفارش'
+                },
+                en: {
+                    navHome:'Home', navPortfolio:'Portfolio', navContact:'Contact',
+                    heroBadge:'🚀 RITM Freelance Group', heroTitle:'Creativity, Speed, Quality',
+                    heroSubtitle:'We at RITM provide professional video editing and web development with top quality and fair prices.',
+                    statProjects:'Projects Done', statSatisfaction:'Satisfaction Rate', statSupport:'Support Hours',
+                    portfolioTag:'📁 Portfolio', portfolioTitle:'Our Works', portfolioDesc:'Click on any item to view it larger.',
+                    workLabel1:'Work 1', workLabel2:'Work 2', workLabel3:'Work 3', workLabel4:'Work 4', workLabel5:'Work 5',
+                    contactTag:'📞 Contact Us', contactTitle:'Join Our Channel', contactDesc:'Stay in touch via Telegram and Bale.',
+                    orderBtn:'Order Now', footer:'© 2026 · Made with ❤️ by RITM Group',
+                    modalTitle:'📋 Place Order', modalSubtitle:'Select your desired service and fill the form.',
+                    editHeading:'🎬 Video Editing', editPremiere:'Premiere Pro Editing', editMobile:'Mobile Editing',
+                    codeHeading:'💻 HTML Development', codeSingle:'Single Page HTML + Hosting', codeFull:'Full Project (HTML+CSS+JS) + Hosting',
+                    deliveryNote:'⏱ Delivery time will be announced after reviewing your request.',
+                    formName:'👤 Full Name *', formPhone:'📱 Phone Number *', formEmail:'📧 Email (optional)',
+                    formService:'🎯 Service Type *', serviceSelect:'Select a service', formDesc:'📝 Order Description *',
+                    submitBtn:'🚀 Submit Order'
+                }
+            };
+
+            let currentLang = localStorage.getItem('ritm-lang') || 'fa';
+            const langToggle = document.getElementById('langToggle');
+            const langLabel = document.getElementById('langLabel');
+
+            function applyTranslations(lang) {
+                document.querySelectorAll('[data-translate]').forEach(el=>{
+                    const key = el.dataset.translate;
+                    if(translations[lang] && translations[lang][key]) el.textContent = translations[lang][key];
+                });
+                // fallback spans
+                document.querySelectorAll('.fallback-fa').forEach(s=> s.style.display = lang==='fa' ? 'flex' : 'none');
+                document.querySelectorAll('.fallback-en').forEach(s=> s.style.display = lang==='en' ? 'flex' : 'none');
+                // دکمه شناور
+                document.querySelector('#floatingOrderBtn span:last-child').textContent = translations[lang].orderBtn;
+                // دکمه ارسال
+                submitBtn.textContent = translations[lang].submitBtn;
+                // placeholderها
+                document.getElementById('name').placeholder = lang==='fa' ? 'مثال: علی محمدی' : 'e.g. John Doe';
+                document.getElementById('phone').placeholder = lang==='fa' ? 'مثال: ۰۹۱۲۳۴۵۶۷۸۹' : 'e.g. +98912...';
+                document.getElementById('email').placeholder = lang==='fa' ? 'example@mail.com' : 'example@mail.com';
+                document.getElementById('description').placeholder = lang==='fa' ? 'جزئیات پروژه...' : 'Project details...';
+                // آپدیت لیبل زبان
+                langLabel.textContent = lang==='fa' ? 'EN' : 'FA';
+                document.documentElement.lang = lang;
+                localStorage.setItem('ritm-lang', lang);
+            }
+
+            langToggle.addEventListener('click', ()=>{
+                currentLang = currentLang==='fa' ? 'en' : 'fa';
+                applyTranslations(currentLang);
+            });
+
+            applyTranslations(currentLang);
+        })();
+    </script>
+</body>
+</html>
